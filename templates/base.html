@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Bargain Chatbot{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .navbar-nav a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 10px;
+        }
+
+        .navbar-nav a:hover {
+            color: #667eea;
+        }
+
+        .navbar-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .navbar-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Content Area */
+        .content-wrapper {
+            min-height: calc(100vh - 350px);
+        }
+
+        /* Footer Branding - WHITE TEXT VERSION */
+        .footer-brand {
+            text-align: center;
+            padding: 50px 30px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            margin-top: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-brand h3 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .footer-brand p {
+            margin: 12px 0;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 17px;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .footer-brand p:first-of-type {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+        }
+
+        .footer-brand strong {
+            color: white;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .footer-brand a {
+            color: white;
+            text-decoration: underline;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .footer-brand a:hover {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 17px;
+            transition: all 0.3s;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .footer-links a:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .navbar-brand {
+                font-size: 24px;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                width: 100%;
+            }
+
+            .footer-brand {
+                padding: 35px 20px;
+            }
+
+            .footer-brand h3 {
+                font-size: 28px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">🤖 AI Bargain Shop</div>
+        <ul class="navbar-nav">
+            <li><a href="{% url 'products:product_list' %}">Products</a></li>
+            <li><a href="{% url 'products:about' %}">About</a></li>
+            <li><a href="/admin/" target="_blank">Admin</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer Branding -->
+    <footer class="footer-brand">
+        <h3>🤖 AI Bargain Chatbot</h3>
+        <p>Powered by Advanced Negotiation Algorithms</p>
+        <p><strong>Developed by Vinayak Tiwari</strong></p>
+        <p><a href="https://arqonx.ai" target="_blank">ArqonX AI Technologies</a> © 2025</p>
+        
+        <div class="footer-links">
+            <a href="{% url 'products:about' %}">About</a>
+            <a href="https://github.com/vinayakktiwariii/ai-bargain-chatbot" target="_blank">GitHub</a>
+            <a href="mailto:arqonxaitechnologies@gmail.com">Contact</a>
+            <a href="https://arqonx.ai" target="_blank">ArqonX AI</a>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

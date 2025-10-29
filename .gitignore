@@ -1,0 +1,45 @@
+﻿# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+local_settings.py
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+*.env
+secrets.json
+
+# Test files
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Backup files
+*.bak

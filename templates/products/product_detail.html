@@ -1,0 +1,693 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - AI Bargain Shop{% endblock %}
+
+{% block extra_css %}
+<style>
+    .product-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .product-gallery {
+        width: 100%;
+        height: 400px;
+        background: #f8f9fa;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .main-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 20px;
+    }
+
+    .thumbnail-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: all 0.3s;
+    }
+
+    .thumbnail:hover, .thumbnail.active {
+        border-color: #667eea;
+        transform: scale(1.05);
+    }
+
+    .thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .product-details h1 {
+        font-size: 32px;
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+
+    .product-details p {
+        color: #7f8c8d;
+        line-height: 1.8;
+        font-size: 16px;
+    }
+
+    .price-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin: 20px 0;
+    }
+
+    .price-section .label {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .price-section .price {
+        font-size: 48px;
+        font-weight: 800;
+    }
+
+    .price-section .discount-info {
+        font-size: 14px;
+        margin-top: 10px;
+        opacity: 0.95;
+    }
+
+    .specs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .spec-label {
+        font-size: 12px;
+        color: #7f8c8d;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .spec-value {
+        font-size: 18px;
+        color: #2c3e50;
+        font-weight: 700;
+    }
+
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 700px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .chat-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .bot-avatar {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
+
+    .connection-status {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #2ecc71;
+        animation: pulse 2s infinite;
+    }
+
+    .status-dot.disconnected {
+        background: #e74c3c;
+        animation: none;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 25px;
+        background: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .message {
+        display: flex;
+        gap: 12px;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.user {
+        flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .message.bot .message-avatar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .message.user .message-avatar {
+        background: #3498db;
+    }
+
+    .message.system .message-avatar {
+        background: #95a5a6;
+    }
+
+    .message-content {
+        max-width: 70%;
+        padding: 15px 20px;
+        border-radius: 18px;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .message.bot .message-content {
+        background: white;
+        color: #2c3e50;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .message.user .message-content {
+        background: #3498db;
+        color: white;
+    }
+
+    .message.system .message-content {
+        background: #ecf0f1;
+        color: #7f8c8d;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .chat-input {
+        padding: 25px;
+        background: white;
+        border-top: 2px solid #ecf0f1;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 10px;
+    }
+
+    .offer-input {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid #ecf0f1;
+        border-radius: 25px;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .offer-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .send-btn {
+        padding: 15px 35px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .send-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .quick-offers {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .quick-btn {
+        padding: 10px 18px;
+        background: #ecf0f1;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .quick-btn:hover {
+        background: #667eea;
+        color: white;
+    }
+
+    /* Typing Indicator */
+.typing-indicator {
+    display: flex;
+    gap: 5px;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 18px;
+    width: fit-content;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: #95a5a6;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-10px); }
+}
+
+/* Confetti Container */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #f39c12;
+    position: absolute;
+    animation: confetti-fall 3s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Footer Branding */
+.footer-brand {
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin-top: 40px;
+    border-radius: 20px;
+}
+
+.footer-brand h3 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+.footer-brand p {
+    margin: 5px 0;
+    opacity: 0.9;
+}
+
+.footer-brand a {
+    color: white;
+    text-decoration: underline;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="product-container">
+    <div class="product-info">
+        <div class="product-gallery">
+            <img id="mainImage" class="main-image" src="{% if product.image_url %}{{ product.image_url }}{% else %}https://via.placeholder.com/400{% endif %}" alt="{{ product.name }}">
+        </div>
+        
+        {% if product.image_url_2 or product.image_url_3 or product.image_url_4 %}
+        <div class="thumbnail-row">
+            {% if product.image_url %}<div class="thumbnail active" onclick="changeImage('{{ product.image_url }}', this)"><img src="{{ product.image_url }}" alt="View 1"></div>{% endif %}
+            {% if product.image_url_2 %}<div class="thumbnail" onclick="changeImage('{{ product.image_url_2 }}', this)"><img src="{{ product.image_url_2 }}" alt="View 2"></div>{% endif %}
+            {% if product.image_url_3 %}<div class="thumbnail" onclick="changeImage('{{ product.image_url_3 }}', this)"><img src="{{ product.image_url_3 }}" alt="View 3"></div>{% endif %}
+            {% if product.image_url_4 %}<div class="thumbnail" onclick="changeImage('{{ product.image_url_4 }}', this)"><img src="{{ product.image_url_4 }}" alt="View 4"></div>{% endif %}
+        </div>
+        {% endif %}
+
+        <div class="product-details">
+            <h1>{{ product.name }}</h1>
+            <p>{{ product.description }}</p>
+        </div>
+
+        <div class="price-section">
+            <div class="label">Asking Price</div>
+            <div class="price">₹{{ product.list_price|floatformat:0 }}</div>
+            <div class="discount-info">💡 Our AI can negotiate down to ₹{{ product.min_price|floatformat:0 }}</div>
+        </div>
+
+        <div class="specs-grid">
+            <div><div class="spec-label">Min Price</div><div class="spec-value">₹{{ product.min_price|floatformat:0 }}</div></div>
+            <div><div class="spec-label">Max Rounds</div><div class="spec-value">{{ product.max_rounds }}</div></div>
+            <div><div class="spec-label">Auto Accept</div><div class="spec-value">₹{{ product.auto_accept_threshold|floatformat:0 }}</div></div>
+            <div><div class="spec-label">Discount Up To</div><div class="spec-value">{% widthratio product.concession_rate 1 100 %}%</div></div>
+        </div>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="bot-avatar">🤖</div>
+            <div style="flex: 1;">
+                <h3 style="margin: 0;">AI Bargain Assistant</h3>
+                <p style="margin: 5px 0 0 0; opacity: 0.95; font-size: 14px;">Let's negotiate!</p>
+            </div>
+            <div class="connection-status">
+                <span class="status-dot disconnected" id="statusDot"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages"></div>
+
+        <div class="chat-input">
+            <div class="input-row">
+                <input type="number" class="offer-input" id="offerInput" placeholder="Enter your offer (e.g., 8000)" min="0" step="100">
+                <button class="send-btn" id="sendBtn" disabled>Send Offer 💸</button>
+            </div>
+            <div class="quick-offers" id="quickOffers"></div>
+        </div>
+    </div>
+</div>
+
+<span id="productData" data-id="{{ product.id }}" data-price="{{ product.list_price }}" style="display:none;"></span>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    var pd = document.getElementById('productData');
+    var productId = parseInt(pd.getAttribute('data-id'));
+    var productListPrice = parseFloat(pd.getAttribute('data-price'));
+    var sessionId = 'session_' + productId + '_' + Date.now();
+    var chatMessages = document.getElementById('chatMessages');
+    var offerInput = document.getElementById('offerInput');
+    var sendBtn = document.getElementById('sendBtn');
+    var statusDot = document.getElementById('statusDot');
+    var statusText = document.getElementById('statusText');
+    var quickOffers = document.getElementById('quickOffers');
+    var lastBotOffer = null;
+    var negotiationHistory = [];
+
+    function initChat() {
+        statusText.textContent = 'Connecting...';
+        fetch('/chat/negotiate/' + productId + '/')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    statusDot.classList.remove('disconnected');
+                    statusText.textContent = 'Connected';
+                    sendBtn.disabled = false;
+                    addMessage('system', data.message, '⚙️');
+                    if (data.product) generateQuickOffers(data.product.list_price);
+                }
+            })
+            .catch(function() {
+                statusDot.classList.add('disconnected');
+                statusText.textContent = 'Failed';
+                addMessage('system', '❌ Connection failed', '⚠️');
+            });
+    }
+
+    function sendOffer() {
+        var amount = parseFloat(offerInput.value);
+        if (!amount || amount <= 0) { alert('Enter valid amount!'); return; }
+        
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending...';
+        addMessage('user', 'I offer ₹' + amount.toFixed(0), '👤');
+        
+        negotiationHistory.push({type: 'user', amount: amount});
+
+        fetch('/chat/negotiate/' + productId + '/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: amount, session_id: sessionId })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.success) {
+                var result = data.result;
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                setTimeout(function() {
+                    removeTypingIndicator();
+                    addMessage('bot', result.message, '🤖');
+                    
+                    negotiationHistory.push({type: 'bot', amount: result.price, action: result.action});
+                    
+                    if (result.action === 'counter' || result.action === 'final') {
+                        lastBotOffer = result.price;
+                        updateQuickOffers(result.price);
+                    }
+                    
+                    if (result.show_buttons && result.action === 'final') {
+                        setTimeout(function() { addActionButtons(result.price); }, 500);
+                    }
+                    
+                    if (result.is_final && result.action === 'accept') {
+                        setTimeout(function() {
+                            var savings = (productListPrice - result.price).toFixed(0);
+                            addMessage('system', '🎉 Deal closed! You saved ₹' + savings + '!', '✅');
+                            showConfetti();
+                            showNegotiationSummary();
+                            offerInput.disabled = true;
+                            sendBtn.disabled = true;
+                            quickOffers.innerHTML = '';
+                        }, 1000);
+                    }
+                }, 1500);
+            } else {
+                addMessage('system', '❌ Error: ' + data.error, '⚠️');
+            }
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Send Offer 💸';
+            offerInput.value = '';
+        })
+        .catch(function() {
+            addMessage('system', '❌ Network error', '⚠️');
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Send Offer 💸';
+            offerInput.value = '';
+        });
+    }
+
+    function showTypingIndicator() {
+        var indicator = document.createElement('div');
+        indicator.className = 'message bot';
+        indicator.id = 'typingIndicator';
+        indicator.innerHTML = '<div class="message-avatar">🤖</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+        chatMessages.appendChild(indicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        var indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
+
+    function showConfetti() {
+        var colors = ['#f39c12', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];
+        for (var i = 0; i < 50; i++) {
+            setTimeout(function() {
+                var confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(function() { confetti.remove(); }, 3000);
+            }, i * 30);
+        }
+    }
+
+    function showNegotiationSummary() {
+        var summary = '<br><strong>📊 Negotiation Summary:</strong><br>';
+        negotiationHistory.forEach(function(item, i) {
+            if (item.type === 'user') {
+                summary += 'Round ' + Math.ceil((i + 1) / 2) + ': You offered ₹' + item.amount;
+            } else if (item.type === 'bot' && item.action === 'counter') {
+                summary += ' → Bot countered ₹' + item.amount + '<br>';
+            } else if (item.type === 'bot' && item.action === 'accept') {
+                summary += ' → Bot accepted! ✅<br>';
+            }
+        });
+        var lastMsg = chatMessages.lastChild;
+        if (lastMsg) {
+            lastMsg.querySelector('.message-content').innerHTML += summary;
+        }
+    }
+
+    function addMessage(type, text, avatar) {
+        var msg = document.createElement('div');
+        msg.className = 'message ' + type;
+        msg.innerHTML = '<div class="message-avatar">' + avatar + '</div><div class="message-content">' + text + '</div>';
+        chatMessages.appendChild(msg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function generateQuickOffers(listPrice) {
+        var offers = [
+            { percent: 0.70, label: '30% off' },
+            { percent: 0.80, label: '20% off' },
+            { percent: 0.90, label: '10% off' }
+        ];
+        quickOffers.innerHTML = offers.map(function(o) {
+            var amt = Math.round(listPrice * o.percent);
+            return '<button class="quick-btn" onclick="window.quickOffer(' + amt + ')">' + o.label + ': ₹' + amt + '</button>';
+        }).join('');
+    }
+
+    function updateQuickOffers(botPrice) {
+        var acceptBotBtn = '<button class="quick-btn" style="background:#27ae60;color:white;font-weight:700" onclick="window.quickOffer(' + botPrice + ')">✅ Accept ₹' + botPrice + '</button>';
+        var counter1 = Math.round(botPrice * 0.95);
+        var counter2 = Math.round(botPrice * 0.90);
+        var buttons = acceptBotBtn;
+        buttons += '<button class="quick-btn" onclick="window.quickOffer(' + counter1 + ')">Counter: ₹' + counter1 + '</button>';
+        buttons += '<button class="quick-btn" onclick="window.quickOffer(' + counter2 + ')">Counter: ₹' + counter2 + '</button>';
+        quickOffers.innerHTML = buttons;
+    }
+
+    function addActionButtons(price) {
+        var div = document.createElement('div');
+        div.style.cssText = 'display:flex;gap:10px;justify-content:center;margin:20px 0';
+        
+        var acceptBtn = document.createElement('button');
+        acceptBtn.textContent = '✅ Accept ₹' + price;
+        acceptBtn.style.cssText = 'padding:15px 30px;background:#27ae60;color:white;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer';
+        acceptBtn.onclick = function() {
+            addMessage('user', 'I accept ₹' + price, '👤');
+            setTimeout(function() {
+                addMessage('system', '🎉 Deal closed! You saved ₹' + (productListPrice - price).toFixed(0), '✅');
+                showConfetti();
+                showNegotiationSummary();
+                offerInput.disabled = true;
+                sendBtn.disabled = true;
+                quickOffers.innerHTML = '';
+            }, 500);
+            div.remove();
+        };
+        
+        var declineBtn = document.createElement('button');
+        declineBtn.textContent = '❌ Decline';
+        declineBtn.style.cssText = 'padding:15px 30px;background:#e74c3c;color:white;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer';
+        declineBtn.onclick = function() {
+            addMessage('user', 'I decline', '👤');
+            setTimeout(function() {
+                addMessage('system', '❌ Negotiation ended', '⚠️');
+                offerInput.disabled = true;
+                sendBtn.disabled = true;
+                quickOffers.innerHTML = '';
+            }, 500);
+            div.remove();
+        };
+        
+        div.appendChild(acceptBtn);
+        div.appendChild(declineBtn);
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    window.quickOffer = function(amt) {
+        offerInput.value = amt;
+        sendOffer();
+    };
+
+    window.changeImage = function(url, el) {
+        document.getElementById('mainImage').src = url;
+        document.querySelectorAll('.thumbnail').forEach(function(t) { t.classList.remove('active'); });
+        el.classList.add('active');
+    };
+
+    sendBtn.addEventListener('click', sendOffer);
+    offerInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') sendOffer(); });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initChat);
+    } else {
+        initChat();
+    }
+})();
+</script>
+{% endblock %}

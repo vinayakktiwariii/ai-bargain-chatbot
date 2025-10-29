@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - {{ product.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .checkout-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .success-icon {
+        text-align: center;
+        font-size: 80px;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #27ae60;
+        margin-bottom: 30px;
+    }
+
+    .order-summary {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+    }
+
+    .order-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .order-row:last-child {
+        border-bottom: none;
+        font-size: 24px;
+        font-weight: bold;
+        color: #27ae60;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <div class="success-icon">🎉</div>
+    <h1>Deal Closed!</h1>
+    
+    <div class="order-summary">
+        <h3 style="margin-bottom: 20px;">Order Summary</h3>
+        <div class="order-row">
+            <span>Product:</span>
+            <span><strong>{{ product.name }}</strong></span>
+        </div>
+        <div class="order-row">
+            <span>Original Price:</span>
+            <span>₹{{ product.list_price }}</span>
+        </div>
+        <div class="order-row">
+            <span>Your Negotiated Price:</span>
+            <span style="color: #27ae60; font-weight: bold;">₹{{ final_price }}</span>
+        </div>
+        <div class="order-row">
+            <span>You Saved:</span>
+            <span style="color: #e74c3c; font-weight: bold;">₹{{ product.list_price|add:"-"|add:final_price|floatformat:0 }}</span>
+        </div>
+        <div class="order-row">
+            <span>Total:</span>
+            <span>₹{{ final_price }}</span>
+        </div>
+    </div>
+    
+    <button class="btn-primary" onclick="alert('Payment integration coming soon! This is a demo.')">
+        Proceed to Payment 💳
+    </button>
+    
+    <p style="text-align: center; margin-top: 20px; color: #7f8c8d;">
+        <a href="{% url 'products:list' %}" style="color: #667eea; text-decoration: none;">← Continue Shopping</a>
+    </p>
+</div>
+{% endblock %}

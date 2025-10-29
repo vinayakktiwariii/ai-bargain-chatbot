@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - AI Bargain Shop{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        text-align: center;
+        margin-bottom: 60px;
+        color: white;
+        padding: 40px 20px;
+    }
+
+    .hero h1 {
+        font-size: 56px;
+        margin-bottom: 20px;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+
+    .hero p {
+        font-size: 22px;
+        opacity: 0.95;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 35px;
+        margin-top: 30px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        position: relative;
+    }
+
+    .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .product-card:hover::before {
+        opacity: 1;
+    }
+
+    .product-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 280px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .product-image img {
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        transition: transform 0.4s;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .product-body {
+        padding: 30px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .product-body h2 {
+        font-size: 24px;
+        color: #2c3e50;
+        margin-bottom: 12px;
+        font-weight: 700;
+    }
+
+    .product-body p {
+        color: #7f8c8d;
+        margin-bottom: 25px;
+        font-size: 15px;
+        line-height: 1.7;
+        min-height: 45px;
+    }
+
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding: 15px 0;
+        border-top: 2px solid #f1f3f5;
+        border-bottom: 2px solid #f1f3f5;
+    }
+
+    .price {
+        font-size: 36px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .discount-badge {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 25px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 16px;
+        transition: all 0.3s;
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        pointer-events: none;
+        letter-spacing: 0.5px;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 100px 20px;
+        color: white;
+    }
+
+    .empty-state h2 {
+        font-size: 42px;
+        margin-bottom: 20px;
+        font-weight: 800;
+    }
+
+    .empty-state p {
+        font-size: 20px;
+        margin-bottom: 35px;
+        opacity: 0.9;
+    }
+
+    .empty-state a {
+        display: inline-block;
+        padding: 18px 40px;
+        background: white;
+        color: #667eea;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 18px;
+        transition: all 0.3s;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .empty-state a:hover {
+        transform: scale(1.08);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+
+    /* Feature badges */
+    .features {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .feature-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: #f8f9fa;
+        border-radius: 20px;
+        font-size: 12px;
+        color: #495057;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 36px;
+        }
+
+        .hero p {
+            font-size: 18px;
+        }
+
+        .product-grid {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .product-image {
+            height: 240px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>🎯 Negotiate. Save. Win.</h1>
+    <p>Your AI negotiation partner for the best deals on premium products. Chat with our bot and get instant discounts!</p>
+</div>
+
+{% if products %}
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card" data-product-url="{% url 'products:product_detail' product.pk %}">
+        <div class="product-image">
+            {% if product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+            {% else %}
+                <div style="font-size: 80px;">👟</div>
+            {% endif %}
+        </div>
+        <div class="product-body">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description|truncatewords:15 }}</p>
+            
+            <div class="features">
+                <span class="feature-badge">✨ AI Negotiation</span>
+                <span class="feature-badge">⚡ Instant Deal</span>
+            </div>
+            
+            <div class="price-row">
+                <div class="price">₹{{ product.list_price|floatformat:0 }}</div>
+                <div class="discount-badge">Negotiable</div>
+            </div>
+            
+            <a href="{% url 'products:product_detail' product.pk %}" class="btn">
+                Make an Offer 💬
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <h2>🎁 No Products Yet</h2>
+    <p>Add some products in the admin panel to get started!</p>
+    <a href="/admin/">Go to Admin Panel</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Make product cards clickable
+    document.addEventListener('DOMContentLoaded', function() {
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            card.addEventListener('click', function() {
+                window.location.href = this.dataset.productUrl;
+            });
+        });
+    });
+</script>
+{% endblock %}

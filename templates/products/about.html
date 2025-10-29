@@ -1,0 +1,370 @@
+{% extends 'base.html' %}
+
+{% block title %}About - AI Bargain Chatbot{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .hero-section {
+        background: white;
+        border-radius: 20px;
+        padding: 60px 40px;
+        text-align: center;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .hero-section h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fadeInDown 1s ease;
+    }
+
+    .hero-section p {
+        font-size: 20px;
+        color: #7f8c8d;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.8;
+        animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+        animation: fadeInUp 1s ease;
+        animation-fill-mode: both;
+    }
+
+    .feature-card:nth-child(1) { animation-delay: 0.2s; }
+    .feature-card:nth-child(2) { animation-delay: 0.4s; }
+    .feature-card:nth-child(3) { animation-delay: 0.6s; }
+    .feature-card:nth-child(4) { animation-delay: 0.8s; }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    }
+
+    .feature-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .feature-card h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .feature-card p {
+        color: #7f8c8d;
+        line-height: 1.8;
+    }
+
+    .tech-stack {
+        background: white;
+        border-radius: 20px;
+        padding: 50px 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        animation: fadeIn 2s ease;
+    }
+
+    .tech-stack h2 {
+        text-align: center;
+        font-size: 36px;
+        margin-bottom: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .tech-grid {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+
+    .tech-item {
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s;
+    }
+
+    .tech-item:hover {
+        transform: scale(1.1);
+    }
+
+    .tech-item img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+    }
+
+    .tech-item span {
+        display: block;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .team-section {
+        background: white;
+        border-radius: 20px;
+        padding: 50px 40px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        animation: fadeIn 2.5s ease;
+    }
+
+    .team-section h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .team-member {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        color: white;
+    }
+
+    .team-member h3 {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    .team-member p {
+        font-size: 18px;
+        opacity: 0.95;
+        margin: 5px 0;
+    }
+
+    .team-member .links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .team-member a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+
+    .team-member a:hover {
+        background: rgba(255,255,255,0.3);
+        transform: scale(1.05);
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 60px 40px;
+        text-align: center;
+        color: white;
+        margin-top: 40px;
+        animation: fadeIn 3s ease;
+    }
+
+    .cta-section h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    .cta-section p {
+        font-size: 18px;
+        margin-bottom: 30px;
+        opacity: 0.95;
+    }
+
+    .cta-btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background: white;
+        color: #667eea;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .cta-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1>🤖 AI Bargain Chatbot</h1>
+        <p>Experience the future of online shopping with our intelligent price negotiation system. Powered by advanced AI algorithms, our chatbot creates engaging, realistic bargaining conversations that make every purchase an exciting adventure.</p>
+    </section>
+
+    <!-- Features Grid -->
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>Smart AI Engine</h3>
+            <p>Game theory-inspired algorithms that adapt to your negotiation style with progressive concessions and realistic counteroffers.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Real-time Interaction</h3>
+            <p>Instant responses with typing indicators and smooth animations for a natural, engaging conversation experience.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Strategic Pricing</h3>
+            <p>Intelligent threshold-based decisions ensure fair deals while maximizing value for both parties.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Beautiful UI</h3>
+            <p>Modern, gradient-based design with confetti animations and visual feedback that makes negotiating fun!</p>
+        </div>
+    </div>
+
+    <!-- Technology Stack -->
+    <section class="tech-stack">
+        <h2>⚙️ Built With Cutting-Edge Technology</h2>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <div style="font-size: 80px;">🐍</div>
+                <span>Python</span>
+            </div>
+            <div class="tech-item">
+                <div style="font-size: 80px;">🌐</div>
+                <span>Django 5.2.7</span>
+            </div>
+            <div class="tech-item">
+                <div style="font-size: 80px;">💻</div>
+                <span>JavaScript</span>
+            </div>
+            <div class="tech-item">
+                <div style="font-size: 80px;">🎨</div>
+                <span>CSS3</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <h2>👨‍💻 Meet the Creator</h2>
+        <div class="team-member">
+            <h3>Vinayak Tiwari</h3>
+            <p>AI Engineer | Full-Stack Developer | Founder @ ArqonX AI</p>
+            <p style="margin-top: 15px; font-size: 16px;">Passionate about creating intelligent systems that enhance user experiences. Specializing in AI-powered applications and modern web technologies.</p>
+            <div class="links">
+                <a href="https://github.com/vinayakktiwariii" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/vinayak-tiwari-311546393" target="_blank">LinkedIn</a>
+                <a href="mailto:arqonxaitechnologies@gmail.com">Email</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Info -->
+    <section class="team-section" style="margin-top: 30px;">
+        <h2>🏢 ArqonX AI Technologies</h2>
+        <p style="color: #7f8c8d; max-width: 700px; margin: 20px auto; line-height: 1.8;">
+            ArqonX AI Technologies is dedicated to developing innovative artificial intelligence solutions 
+            that solve real-world problems. We believe in creating technology that's not just powerful, 
+            but also intuitive and accessible to everyone.
+        </p>
+        <p style="color: #667eea; font-size: 18px; margin-top: 20px;">
+            <strong>Our Mission:</strong> Making AI technology practical, user-friendly, and impactful.
+        </p>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Experience Smart Negotiation?</h2>
+        <p>Try our AI chatbot and discover how fun online shopping can be!</p>
+        <a href="{% url 'products:product_list' %}" class="cta-btn">Start Negotiating Now</a>
+    </section>
+</div>
+{% endblock %}
