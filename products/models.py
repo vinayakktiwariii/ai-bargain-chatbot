@@ -11,6 +11,9 @@ class Product(models.Model):
     image_url_2 = models.URLField(blank=True, verbose_name="Image 2")
     image_url_3 = models.URLField(blank=True, verbose_name="Image 3")
     image_url_4 = models.URLField(blank=True, verbose_name="Image 4")
+    image_url_5 = models.URLField(max_length=500, blank=True)
+    image_url_6 = models.URLField(max_length=500, blank=True)
+
     
     # Pricing strategy
     list_price = models.DecimalField(max_digits=10, decimal_places=2)
