@@ -1,15 +1,3 @@
 ﻿{
-  "version": 2,
-  "builds": [
-    {
-      "src": "bargain_project/wsgi.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "bargain_project/wsgi.py"
-    }
-  ]
+"builds": [{"src": "index.py", "use": "@vercel/python"}]
 }
