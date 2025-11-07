@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}AI Bargain Chatbot{% endblock %}</title>
     <style>
         * {
@@ -14,190 +15,241 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-attachment: fixed;
             min-height: 100vh;
-            padding: 20px;
+            padding: 1rem;
         }
 
-        /* Navigation */
-        .navbar {
-            background: white;
-            padding: 20px 40px;
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
             border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .product-info p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .price-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 1rem;
         }
 
-        .navbar-brand {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .navbar-nav {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .navbar-nav a {
-            color: #2c3e50;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            position: relative;
-            padding: 5px 10px;
-        }
-
-        .navbar-nav a:hover {
+        .price {
+            font-size: 1.8rem;
+            font-weight: 700;
             color: #667eea;
         }
 
-        .navbar-nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 3px;
+        .badge {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s;
-        }
-
-        .navbar-nav a:hover::after {
-            width: 100%;
-        }
-
-        /* Content Area */
-        .content-wrapper {
-            min-height: calc(100vh - 350px);
-        }
-
-        /* Footer Branding - WHITE TEXT VERSION */
-        .footer-brand {
-            text-align: center;
-            padding: 50px 30px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
             color: white;
-            margin-top: 40px;
+            padding: 0.5rem 1rem;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
-        .footer-brand h3 {
-            font-size: 36px;
-            margin-bottom: 15px;
-            font-weight: 800;
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .footer-brand p {
-            margin: 12px 0;
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 17px;
-            font-weight: 500;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .footer-brand p:first-of-type {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
-        }
-
-        .footer-brand strong {
-            color: white;
-            font-size: 22px;
-            font-weight: 800;
-        }
-
-        .footer-brand a {
-            color: white;
-            text-decoration: underline;
-            font-weight: 700;
-            font-size: 18px;
-            transition: all 0.3s;
-        }
-
-        .footer-brand a:hover {
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .footer-links a {
-            color: white;
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 17px;
-            transition: all 0.3s;
-            padding: 10px 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
         }
 
-        .footer-links a:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        /* Responsive */
+        /* ===== MOBILE RESPONSIVE STYLES ===== */
+
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
-                padding: 10px;
+                padding: 0.5rem;
             }
 
-            .navbar {
+            header {
+                padding: 1.5rem 1rem;
+                margin-bottom: 1.5rem;
+                border-radius: 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            header p {
+                font-size: 0.9rem;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 0;
+            }
+
+            .product-card {
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .product-image {
+                height: 200px;
+            }
+
+            .product-info {
+                padding: 1rem;
+            }
+
+            .product-info h2 {
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .product-info p {
+                font-size: 0.9rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .price {
+                font-size: 1.5rem;
+            }
+
+            .badge {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .price-section {
                 flex-direction: column;
-                gap: 20px;
-                padding: 20px;
-            }
-
-            .navbar-brand {
-                font-size: 24px;
-            }
-
-            .navbar-nav {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-                width: 100%;
-            }
-
-            .footer-brand {
-                padding: 35px 20px;
-            }
-
-            .footer-brand h3 {
-                font-size: 28px;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 15px;
+                align-items: flex-start;
+                gap: 0.5rem;
             }
         }
 
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.25rem;
+            }
+
+            .product-info h2 {
+                font-size: 1.1rem;
+            }
+
+            .price {
+                font-size: 1.25rem;
+            }
+
+            .product-image {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 896px) and (orientation: landscape) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+        }
     </style>
-    {% block extra_css %}{% endblock %}
+
+    {% block extra_style %}{% endblock %}
 </head>
 <body>
     <!-- Navigation Bar -->
