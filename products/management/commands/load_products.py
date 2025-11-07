@@ -2,7 +2,7 @@
 from products.models import Product
 
 class Command(BaseCommand):
-    help = 'Load products with HAND-VERIFIED professional images'
+    help = 'Load 13 premium products'
 
     def handle(self, *args, **kwargs):
         Product.objects.all().delete()
@@ -10,7 +10,7 @@ class Command(BaseCommand):
         products = [
             {
                 'name': 'Nike Air Jordan 1 High',
-                'description': 'Iconic basketball sneakers. Premium leather. Air-Sole cushioning. Classic design.',
+                'description': 'Iconic basketball sneakers. Premium leather. Air-Sole cushioning.',
                 'image_url': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600',
@@ -23,7 +23,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'Apple AirPods Pro Gen 2',
-                'description': 'Active Noise Cancellation. Transparency mode. 6hr battery. Wireless charging case.',
+                'description': 'Active Noise Cancellation. Transparency mode. 6hr battery.',
                 'image_url': 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600',
@@ -36,7 +36,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'Sony WH-1000XM5',
-                'description': 'Premium over-ear headphones. Industry-leading ANC. 30hr battery. LDAC codec.',
+                'description': 'Premium headphones. Industry-leading ANC. 30hr battery.',
                 'image_url': 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600',
@@ -49,7 +49,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'Samsung Galaxy Watch 6',
-                'description': 'Smartwatch with ECG. Blood pressure monitoring. 5ATM. Sapphire crystal glass.',
+                'description': 'Smartwatch with ECG. Blood pressure monitoring. 5ATM.',
                 'image_url': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600',
@@ -62,7 +62,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'PlayStation 5',
-                'description': 'Next-gen console. Ultra-fast SSD. Ray tracing. 4K 120Hz. DualSense controller.',
+                'description': 'Next-gen console. Ultra-fast SSD. Ray tracing. 4K 120Hz.',
                 'image_url': 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1622297845775-5ff3fef71d13?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=600',
@@ -75,7 +75,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'MacBook Pro 14 M3',
-                'description': 'M3 Pro chip. 14-inch Liquid Retina XDR. 18hr battery. 16GB RAM. 512GB SSD.',
+                'description': 'M3 Pro chip. 14-inch Liquid Retina XDR. 18hr battery.',
                 'image_url': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600',
@@ -88,7 +88,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'Canon EOS R6 Mark II',
-                'description': 'Professional mirrorless camera. 24.2MP full-frame. 40fps burst. 4K 60p video.',
+                'description': 'Professional mirrorless camera. 24.2MP. 40fps burst.',
                 'image_url': 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1606941923511-69e4c42e8b5f?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600',
@@ -101,7 +101,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'DJI Mavic 3 Pro',
-                'description': 'Professional drone. Hasselblad camera. 43min flight. Obstacle sensing. 8K video.',
+                'description': 'Professional drone. Hasselblad camera. 43min flight.',
                 'image_url': 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1507582020474-9a35b7d455d9?w=600',
@@ -114,7 +114,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'iPad Pro 12.9 M2',
-                'description': 'Apple M2 chip. 12.9-inch Liquid Retina XDR. 5G. Apple Pencil 2 compatible.',
+                'description': 'Apple M2 chip. 12.9-inch Liquid Retina XDR. 5G.',
                 'image_url': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1585789575802-b2e4e70acc49?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1561154464-82e9adf32764?w=600',
@@ -126,21 +126,8 @@ class Command(BaseCommand):
                 'auto_decline_threshold': 116900,
             },
             {
-                'name': 'Bose QC Ultra Earbuds',
-                'description': 'True wireless earbuds. World-class ANC. CustomTune. Spatial Audio. 6hr battery.',
-                'image_url': 'https://images.unsplash.com/photo-1590658165737-15a047b7a46e?w=600',
-                'image_url_2': 'https://images.unsplash.com/photo-1598331668826-20cecc596b86?w=600',
-                'image_url_3': 'https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=600',
-                'image_url_4': 'https://images.unsplash.com/photo-1649849937043-469ed285ff1c?w=600',
-                'image_url_5': 'https://images.unsplash.com/photo-1606220838315-056192d5e927?w=600',
-                'list_price': 29900,
-                'min_price': 27900,
-                'auto_accept_threshold': 29400,
-                'auto_decline_threshold': 26900,
-            },
-            {
                 'name': 'LG OLED C3 65-inch',
-                'description': 'OLED TV with perfect blacks. α9 AI processor. 120Hz. Dolby Vision and Atmos.',
+                'description': 'OLED TV with perfect blacks. α9 AI processor. 120Hz.',
                 'image_url': 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600',
@@ -153,7 +140,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'Dyson V15 Detect',
-                'description': 'Cordless vacuum. Laser dust detection. LCD screen. 60min runtime. HEPA filter.',
+                'description': 'Cordless vacuum. Laser dust detection. 60min runtime.',
                 'image_url': 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1605281317010-fe5ffe798166?w=600',
@@ -165,21 +152,8 @@ class Command(BaseCommand):
                 'auto_decline_threshold': 67900,
             },
             {
-                'name': 'KitchenAid Stand Mixer',
-                'description': 'Professional 5-qt mixer. 10-speed. Tilt-head design. Includes 3 attachments.',
-                'image_url': 'https://images.unsplash.com/photo-1594385208974-2e75f8583c0f?w=600',
-                'image_url_2': 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=600',
-                'image_url_3': 'https://images.unsplash.com/photo-1556911261-6bd341186b2f?w=600',
-                'image_url_4': 'https://images.unsplash.com/photo-1578643463396-0997cb5328c3?w=600',
-                'image_url_5': 'https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?w=600',
-                'list_price': 44900,
-                'min_price': 39900,
-                'auto_accept_threshold': 43900,
-                'auto_decline_threshold': 37900,
-            },
-            {
                 'name': 'Herman Miller Aeron Chair',
-                'description': 'Ergonomic office chair. PostureFit SL. Adjustable lumbar. 12-year warranty.',
+                'description': 'Ergonomic office chair. PostureFit SL. 12-year warranty.',
                 'image_url': 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=600',
                 'image_url_2': 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600',
                 'image_url_3': 'https://images.unsplash.com/photo-1592078615290-033ee584e267?w=600',
@@ -196,4 +170,4 @@ class Command(BaseCommand):
             Product.objects.create(**data)
             self.stdout.write(f'✓ {data["name"]}')
 
-        self.stdout.write(self.style.SUCCESS(f'\n✅ {len(products)} products loaded with verified images!'))
+        self.stdout.write(self.style.SUCCESS(f'\n✅ {len(products)} products loaded!'))

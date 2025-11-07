@@ -4,6 +4,74 @@
 
 {% block extra_css %}
 <style>
+/* Mobile responsive chat - ADD AT TOP OF STYLE TAG */
+@media (max-width: 768px) {
+    #chat-interface {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 70vh !important;
+        border-radius: 20px 20px 0 0 !important;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2) !important;
+        z-index: 9999 !important;
+    }
+    
+    #chat-interface.minimized {
+        height: 60px !important;
+    }
+    
+    #chat-header {
+        padding: 1rem !important;
+        border-radius: 20px 20px 0 0 !important;
+    }
+    
+    #chat-messages {
+        height: calc(70vh - 140px) !important;
+        padding: 1rem !important;
+    }
+    
+    #chat-input-container {
+        padding: 1rem !important;
+    }
+    
+    #user-input {
+        font-size: 16px !important;
+    }
+    
+    .product-detail {
+        padding: 1rem !important;
+        margin-bottom: 80px !important;
+    }
+    
+    .product-image {
+        max-height: 300px !important;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #chat-interface {
+        height: 75vh !important;
+    }
+    
+    #chat-messages {
+        height: calc(75vh - 140px) !important;
+    }
+}
+
+@media (max-width: 896px) and (orientation: landscape) {
+    #chat-interface {
+        height: 85vh !important;
+    }
+}
+
     .product-container {
         display: grid;
         grid-template-columns: 1fr 1fr;

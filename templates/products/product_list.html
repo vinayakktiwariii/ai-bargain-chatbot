@@ -237,6 +237,71 @@
             height: 240px;
         }
     }
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
+    
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .product-card {
+        padding: 1rem;
+    }
+    
+    .product-card h2 {
+        font-size: 1.25rem;
+    }
+    
+    .product-card .description {
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .price {
+        font-size: 1.5rem;
+    }
+    
+    .badge {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.25rem;
+    }
+    
+    .product-card h2 {
+        font-size: 1.1rem;
+    }
+    
+    .price {
+        font-size: 1.25rem;
+    }
+}
 </style>
 {% endblock %}
 
